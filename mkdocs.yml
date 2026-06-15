@@ -1,0 +1,41 @@
+site_name: Race Bib Recognition Platform
+site_description: Event-driven platform for recognizing race bib numbers from event photos.
+repo_name: Race Bib Recognition Platform
+docs_dir: docs
+theme:
+  name: mkdocs
+nav:
+  - Home: index.md
+  - Roadmap: roadmap.md
+  - Architecture:
+      - Overview: architecture/overview.md
+      - Pipeline: architecture/pipeline.md
+      - Kafka: architecture/kafka.md
+      - MongoDB: architecture/mongodb.md
+      - API: architecture/api.md
+      - Observability: architecture/observability.md
+      - Decisions:
+          - Event-driven Kafka: architecture/decisions/ADR-0001-event-driven-kafka.md
+          - Artifact-first Design: architecture/decisions/ADR-0002-artifact-first-design.md
+          - MongoDB Aggregate Model: architecture/decisions/ADR-0003-mongodb-aggregate-model.md
+          - Local-first Development: architecture/decisions/ADR-0004-local-first-development.md
+          - Loki for Logs: architecture/decisions/ADR-0005-loki-for-logs.md
+          - No Runner Entity: architecture/decisions/ADR-0006-no-runner-entity.md
+  - Services:
+      - Ingest API: services/ingest-api.md
+      - Bib Detection: services/bib-detection-service.md
+      - Crop: services/crop-service.md
+      - Normalization: services/normalization-service.md
+      - OCR: services/ocr-service.md
+      - Linking: services/linking-service.md
+  - Development:
+      - Local Setup: development/local-setup.md
+      - Testing: development/testing.md
+      - Local Kubernetes: development/local-kubernetes.md
+      - Private Dataset and CVAT: development/private-dataset-and-cvat.md
+      - Codex Rules: development/codex-rules.md
+      - Coding Standards: development/coding-standards.md
+  - Operations:
+      - Runbooks: operations/runbooks.md
+      - Troubleshooting: operations/troubleshooting.md
+      - Cloud Deployment: operations/cloud-deployment.md

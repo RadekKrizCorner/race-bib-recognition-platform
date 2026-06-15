@@ -1,0 +1,11 @@
+image:
+  repository: race-bib-platform/ingest-api
+  tag: local
+  pullPolicy: IfNotPresent
+
+replicaCount: 2
+
+config:
+  artifactRoot: /app/artifacts
+  mongodbUri: mongodb://mongodb:27017/rbp
+  kafkaBootstrapServers: kafka:9092

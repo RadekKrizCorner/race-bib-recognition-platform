@@ -1,0 +1,32 @@
+{
+  "title": "Race Bib Pipeline Overview",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Pipeline Throughput",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [{ "expr": "sum(rate(rbp_jobs_total[5m]))", "refId": "A" }]
+    },
+    {
+      "type": "timeseries",
+      "title": "Failed Jobs",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [{ "expr": "sum(rate(rbp_failed_jobs_total[5m]))", "refId": "A" }]
+    },
+    {
+      "type": "histogram",
+      "title": "OCR Confidence",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "targets": [{ "expr": "rbp_ocr_confidence_bucket", "refId": "A" }]
+    },
+    {
+      "type": "timeseries",
+      "title": "Kafka Consumer Lag",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "targets": [{ "expr": "sum(rbp_kafka_consumer_lag)", "refId": "A" }]
+    }
+  ]
+}

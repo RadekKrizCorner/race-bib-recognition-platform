@@ -1,0 +1,4 @@
+project_id           = "replace-with-project-id"
+region               = "europe-west3"
+cluster_name         = "race-bib-platform"
+artifact_bucket_name = "replace-with-globally-unique-bucket"

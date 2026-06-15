@@ -1,0 +1,60 @@
+model:
+  name: bib-yolo-v3-mps-2
+  task: race-bib-detection
+  framework: ultralytics-yolo
+  architecture: YOLO11n
+  classNames:
+    - bib
+
+artifact:
+  fileName: best.pt
+  releaseAssetName: bib-yolo-v3-mps-2-best.pt
+  checksumAssetName: bib-yolo-v3-mps-2-best.pt.sha256
+  sizeBytes: 5573146
+  sha256: e47ad22e64278286e140afb1ddee9290d628c144b5afc8b9d33de40e57fa49b6
+  localPath: $RBP_PRIVATE_DATA_ROOT/runs/yolo/bib-yolo-v3-mps-2/weights/best.pt
+
+distribution:
+  type: github-release-asset
+  releaseTag: model-bib-yolo-v3-mps-2
+  releaseTitle: Model bib-yolo-v3-mps-2
+
+training:
+  sourceModel: bib-yolo-v2
+  dataset: race-bib-v3
+  commandName: bib-yolo-v3-mps-2
+  imageSize: 1280
+  batchSize: 4
+  device: mps
+  completedEpochs: 55
+  bestEpoch: 35
+  earlyStoppingPatience: 20
+
+validation:
+  val:
+    images: 15
+    instances: 26
+    precision: 0.955
+    recall: 0.923
+    map50: 0.972
+    map50_95: 0.753
+  test:
+    images: 15
+    instances: 37
+    precision: 0.972
+    recall: 0.943
+    map50: 0.944
+    map50_95: 0.777
+
+usage:
+  detectorAdapter: yolo
+  environment:
+    RBP_DETECTOR_ADAPTER: yolo
+    RBP_YOLO_MODEL_PATH: $RBP_PRIVATE_DATA_ROOT/runs/yolo/bib-yolo-v3-mps-2/weights/best.pt
+
+policy:
+  commitWeightsToGit: false
+  rationale:
+    - Generated binary artifact.
+    - Derived from private race photos.
+    - Stored and shared through GitHub Release assets instead of Git history.

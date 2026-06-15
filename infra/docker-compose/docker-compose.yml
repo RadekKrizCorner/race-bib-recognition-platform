@@ -1,0 +1,149 @@
+services:
+  kafka:
+    image: redpandadata/redpanda:v25.2.9
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp
+      - "1"
+      - --memory
+      - 1G
+      - --reserve-memory
+      - 0M
+      - --node-id
+      - "0"
+      - --check=false
+      - --kafka-addr
+      - PLAINTEXT://0.0.0.0:9092,OUTSIDE://0.0.0.0:19092
+      - --advertise-kafka-addr
+      - PLAINTEXT://kafka:9092,OUTSIDE://localhost:19092
+    ports:
+      - "9092:19092"
+    volumes:
+      - ../../.docker-data/redpanda:/var/lib/redpanda/data
+
+  mongodb:
+    image: mongo:8
+    ports:
+      - "27017:27017"
+    volumes:
+      - ../../.docker-data/mongodb:/data/db
+
+  ingest-api:
+    build:
+      context: ../..
+      dockerfile: infra/docker/python-service.Dockerfile
+    environment:
+      RBP_API_MODE: async
+      RBP_MONGODB_URI: mongodb://mongodb:27017/rbp
+      RBP_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      RBP_ARTIFACT_ROOT: /app/artifacts
+    ports:
+      - "8000:8000"
+    depends_on:
+      - kafka
+      - mongodb
+    volumes:
+      - ../../artifacts:/app/artifacts
+
+  bib-detection-service:
+    build:
+      context: ../..
+      dockerfile: infra/docker/python-service.Dockerfile
+    command: ["uv", "run", "python", "-m", "rbp_bib_detection_service.main"]
+    environment:
+      RBP_MONGODB_URI: mongodb://mongodb:27017/rbp
+      RBP_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      RBP_ARTIFACT_ROOT: /app/artifacts
+    depends_on:
+      - kafka
+      - mongodb
+    volumes:
+      - ../../artifacts:/app/artifacts
+
+  crop-service:
+    build:
+      context: ../..
+      dockerfile: infra/docker/python-service.Dockerfile
+    command: ["uv", "run", "python", "-m", "rbp_crop_service.main"]
+    environment:
+      RBP_MONGODB_URI: mongodb://mongodb:27017/rbp
+      RBP_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      RBP_ARTIFACT_ROOT: /app/artifacts
+    depends_on:
+      - kafka
+      - mongodb
+    volumes:
+      - ../../artifacts:/app/artifacts
+
+  normalization-service:
+    build:
+      context: ../..
+      dockerfile: infra/docker/python-service.Dockerfile
+    command: ["uv", "run", "python", "-m", "rbp_normalization_service.main"]
+    environment:
+      RBP_MONGODB_URI: mongodb://mongodb:27017/rbp
+      RBP_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      RBP_ARTIFACT_ROOT: /app/artifacts
+    depends_on:
+      - kafka
+      - mongodb
+    volumes:
+      - ../../artifacts:/app/artifacts
+
+  ocr-service:
+    build:
+      context: ../..
+      dockerfile: infra/docker/python-service.Dockerfile
+    command: ["uv", "run", "python", "-m", "rbp_ocr_service.main"]
+    environment:
+      RBP_MONGODB_URI: mongodb://mongodb:27017/rbp
+      RBP_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      RBP_ARTIFACT_ROOT: /app/artifacts
+    depends_on:
+      - kafka
+      - mongodb
+    volumes:
+      - ../../artifacts:/app/artifacts
+
+  linking-service:
+    build:
+      context: ../..
+      dockerfile: infra/docker/python-service.Dockerfile
+    command: ["uv", "run", "python", "-m", "rbp_linking_service.main"]
+    environment:
+      RBP_MONGODB_URI: mongodb://mongodb:27017/rbp
+      RBP_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      RBP_ARTIFACT_ROOT: /app/artifacts
+    depends_on:
+      - kafka
+      - mongodb
+
+  prometheus:
+    image: prom/prometheus:v3.8.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  loki:
+    image: grafana/loki:3.5.8
+    ports:
+      - "3100:3100"
+
+  tempo:
+    image: grafana/tempo:2.9.0
+    ports:
+      - "3200:3200"
+
+  grafana:
+    image: grafana/grafana:12.3.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+      - loki
+      - tempo

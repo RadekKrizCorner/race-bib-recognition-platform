@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+data:
+  RBP_ARTIFACT_ROOT: {{ .Values.config.artifactRoot | quote }}
+  RBP_MONGODB_URI: {{ .Values.config.mongodbUri | quote }}
+  RBP_KAFKA_BOOTSTRAP_SERVERS: {{ .Values.config.kafkaBootstrapServers | quote }}

@@ -1,0 +1,56 @@
+[project]
+name = "race-bib-recognition-platform"
+version = "0.1.0"
+description = "Event-driven platform for recognizing race bib numbers from event photos."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+  "confluent-kafka>=2.12.0",
+  "fastapi>=0.124.0",
+  "google-cloud-storage>=3.6.0",
+  "httpx>=0.28.0",
+  "opentelemetry-api>=1.39.0",
+  "opentelemetry-exporter-otlp>=1.39.0",
+  "opentelemetry-instrumentation-fastapi>=0.60b0",
+  "opentelemetry-sdk>=1.39.0",
+  "pydantic>=2.12.0",
+  "pymongo>=4.15.0",
+  "python-multipart>=0.0.20",
+  "uvicorn>=0.38.0",
+]
+
+[project.optional-dependencies]
+cv = [
+  "numpy>=2.0.0",
+  "opencv-python-headless>=4.10.0",
+  "paddleocr>=3.0.0",
+  "ultralytics>=8.3.0",
+]
+
+[dependency-groups]
+dev = [
+  "mkdocs>=1.6.1",
+  "pytest>=9.0.0",
+  "ruff>=0.14.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  ".",
+  "libs/rbp-contracts/src",
+  "src",
+  "services/ingest-api/src",
+  "services/bib-detection-service/src",
+  "services/crop-service/src",
+  "services/normalization-service/src",
+  "services/ocr-service/src",
+  "services/linking-service/src",
+]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

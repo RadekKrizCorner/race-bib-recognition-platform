@@ -1,0 +1,51 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+
+# Local data and artifacts
+data/
+tmp/
+.local/
+artifacts/
+samples/photos/*
+!samples/photos/.gitkeep
+
+# Local model weights
+models/*
+!models/registry/
+!models/registry/*.yaml
+*.pt
+*.onnx
+*.engine
+
+# Docker / local runtime
+.docker-data/
+
+# MkDocs
+site/
+
+# AI agent local tooling
+superpowers/
+.superpowers/
+.codex/
+.oca/
+.agent/
+.agent-cache/
+.ai/
+*.agent.local.md
+*.codex.local.md

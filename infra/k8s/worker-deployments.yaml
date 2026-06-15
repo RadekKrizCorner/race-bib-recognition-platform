@@ -1,0 +1,149 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bib-detection-service
+  namespace: race-bib-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bib-detection-service
+  template:
+    metadata:
+      labels:
+        app: bib-detection-service
+    spec:
+      containers:
+        - name: worker
+          image: race-bib-platform/worker:local
+          command: ["uv", "run", "python", "-m", "rbp_bib_detection_service.main"]
+          envFrom:
+            - configMapRef:
+                name: rbp-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crop-service
+  namespace: race-bib-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: crop-service
+  template:
+    metadata:
+      labels:
+        app: crop-service
+    spec:
+      containers:
+        - name: worker
+          image: race-bib-platform/worker:local
+          command: ["uv", "run", "python", "-m", "rbp_crop_service.main"]
+          envFrom:
+            - configMapRef:
+                name: rbp-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: normalization-service
+  namespace: race-bib-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: normalization-service
+  template:
+    metadata:
+      labels:
+        app: normalization-service
+    spec:
+      containers:
+        - name: worker
+          image: race-bib-platform/worker:local
+          command: ["uv", "run", "python", "-m", "rbp_normalization_service.main"]
+          envFrom:
+            - configMapRef:
+                name: rbp-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocr-service
+  namespace: race-bib-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ocr-service
+  template:
+    metadata:
+      labels:
+        app: ocr-service
+    spec:
+      containers:
+        - name: worker
+          image: race-bib-platform/worker:local
+          command: ["uv", "run", "python", "-m", "rbp_ocr_service.main"]
+          envFrom:
+            - configMapRef:
+                name: rbp-config
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linking-service
+  namespace: race-bib-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: linking-service
+  template:
+    metadata:
+      labels:
+        app: linking-service
+    spec:
+      containers:
+        - name: worker
+          image: race-bib-platform/worker:local
+          command: ["uv", "run", "python", "-m", "rbp_linking_service.main"]
+          envFrom:
+            - configMapRef:
+                name: rbp-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

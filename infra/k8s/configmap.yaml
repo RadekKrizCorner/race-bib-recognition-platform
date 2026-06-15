@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rbp-config
+  namespace: race-bib-platform
+data:
+  RBP_ENV: local-kubernetes
+  RBP_ARTIFACT_ROOT: /app/artifacts
+  RBP_MONGODB_URI: mongodb://mongodb:27017/rbp
+  RBP_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
