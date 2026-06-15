@@ -250,7 +250,7 @@ ASSET_NAME=bib-yolo-v3-mps-2-best.pt
 rm -rf "$ASSET_DIR"
 mkdir -p "$ASSET_DIR"
 cp "$MODEL_PATH" "$ASSET_DIR/$ASSET_NAME"
-shasum -a 256 "$ASSET_DIR/$ASSET_NAME" > "$ASSET_DIR/$ASSET_NAME.sha256"
+(cd "$ASSET_DIR" && shasum -a 256 "$ASSET_NAME" > "$ASSET_NAME.sha256")
 cat "$ASSET_DIR/$ASSET_NAME.sha256"
 ```
 
